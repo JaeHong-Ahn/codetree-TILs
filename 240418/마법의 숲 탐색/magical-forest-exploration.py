@@ -1,8 +1,18 @@
 from collections import deque
 
+#1. refresh 고려해서 격자판 구현
+#2. 골렘을 떨어뜨리면서 이동시킴 -> map을 완성
+#3. 이동 회전 구현
+#4. map을 완성
+#5. 출구 위치 구현
+#6. 정령 이동
+#7. 답을 구한다
+
+#디버깅 에러
 def down(g):
     while True:
-        
+        #d0, d1 ..에서 True, False를 구하는 과정에서 에러가 남
+        #순서대로 하는게 맞는듯
         d0_condition = g[0] <= R
 
         if not d0_condition:
@@ -165,7 +175,6 @@ def total_score(g, v):
 
     while q:
         r, c = q.popleft()
-        new_max = -1e9
 
         for j in range(4):
             nr = r + dr[j]
@@ -184,7 +193,7 @@ def total_score(g, v):
                         q.append((nr, nc))
 
                     # 현재 위치가 출구 2 -> 다음 길은 출구가 될 수도 있고 평범한 길이 될 수도 있음 3, 1
-                    elif v[r][c] == 2 and (v[nr][nc] == 3 or v[nr][nc] == 1):
+                    elif v[r][c] == 2 and (v[nr][nc] == 2 or v[nr][nc] == 1):
                         new_map[nr][nc] = 1
                         q.append((nr, nc))
 
