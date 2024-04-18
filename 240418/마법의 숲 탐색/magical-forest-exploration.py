@@ -9,121 +9,138 @@ from collections import deque
 #7. 답을 구한다
 
 #디버깅 에러
-def down(g):
+
+def move(g):
     while True:
-        #d0, d1 ..에서 True, False를 구하는 과정에서 에러가 남
-        #순서대로 하는게 맞는듯
-        d0_condition = g[0] <= R
+        if down(g):
+            continue
 
-        if not d0_condition:
-            return False
+        if turn_left(g):
+            continue
 
-        d1_condition = v[g[0] + 2][g[1]] == 0
-        if not d1_condition:
-            return False
+        if turn_right(g):
+            continue
 
-        d2_condition = v[g[0] + 1][g[1] - 1] == 0
-        if not d2_condition:
-            return False
+        return False
+    
+def down(g):
+    
+    #d0, d1 ..에서 True, False를 구하는 과정에서 에러가 남
+    #순서대로 하는게 맞는듯
+    d0_condition = g[0] <= R
 
-        d3_condition = v[g[0] + 1][g[1] + 1] == 0
-        if not d3_condition:
-            return False
+    if not d0_condition:
+        return False
 
-        g[0] += 1
+    d1_condition = v[g[0] + 2][g[1]] == 0
+    if not d1_condition:
+        return False
+
+    d2_condition = v[g[0] + 1][g[1] - 1] == 0
+    if not d2_condition:
+        return False
+
+    d3_condition = v[g[0] + 1][g[1] + 1] == 0
+    if not d3_condition:
+        return False
+
+    g[0] += 1
+    return True
 
 #서쪽 한칸이 싹 비어 있어야 함
 def turn_left(g):
-    while True:
-        # 조건이 하나라도 맞지 않으면 바로 return False 하는 걸로 수정
-        l1_condition = g[0] <= R
-        if not l1_condition:
-            return False
+    # 조건이 하나라도 맞지 않으면 바로 return False 하는 걸로 수정
+    l1_condition = g[0] <= R
+    if not l1_condition:
+        return False
 
-        l2_condition = g[1] >= 2
-        if not l2_condition:
-            return False
+    l2_condition = g[1] >= 2
+    if not l2_condition:
+        return False
 
-        l3_condition = v[g[0]+1][g[1]-1] == 0
-        if not l3_condition:
-            return False
+    l3_condition = v[g[0]+1][g[1]-1] == 0
+    if not l3_condition:
+        return False
 
-        l4_condition = v[g[0]+2][g[1]-1] == 0
-        if not l4_condition:
-            return False
+    l4_condition = v[g[0]+2][g[1]-1] == 0
+    if not l4_condition:
+        return False
 
-        l5_condition = v[g[0]+1][g[1]-2] == 0
-        if not l5_condition:
-            return False
+    l5_condition = v[g[0]+1][g[1]-2] == 0
+    if not l5_condition:
+        return False
 
-        l6_condition = v[g[0]][g[1] - 2] == 0
-        if not l6_condition:
-            return False
+    l6_condition = v[g[0]][g[1] - 2] == 0
+    if not l6_condition:
+        return False
 
-        l7_condition = v[g[0]-1][g[1] - 1] == 0
-        if not l7_condition:
-            return False
+    l7_condition = v[g[0]-1][g[1] - 1] == 0
+    if not l7_condition:
+        return False
 
-        g[0] += 1
-        g[1] -= 1
+    g[0] += 1
+    g[1] -= 1
 
-        if g[2] == 0:
-            g[2] = 3
+    if g[2] == 0:
+        g[2] = 3
 
-        elif g[2] == 1:
-            g[2] = 0
+    elif g[2] == 1:
+        g[2] = 0
 
-        elif g[2] == 2:
-            g[2] = 1
+    elif g[2] == 2:
+        g[2] = 1
 
-        elif g[2] == 3:
-            g[2] = 2
+    elif g[2] == 3:
+        g[2] = 2
+
+    return True
 
 #동쪽 한칸이 싹 비어 있어야 함
 def turn_right(g):
-    while True:
-        l1_condition = g[0] <= R
-        if not l1_condition:
-            return False
+    l1_condition = g[0] <= R
+    if not l1_condition:
+        return False
 
-        l2_condition = (g[1] + 3) <= C
-        if not l2_condition:
-            return False
+    l2_condition = (g[1] + 3) <= C
+    if not l2_condition:
+        return False
 
-        l3_condition = v[g[0] + 1][g[1] + 1] == 0
-        if not l3_condition:
-            return False
+    l3_condition = v[g[0] + 1][g[1] + 1] == 0
+    if not l3_condition:
+        return False
 
-        l4_condition = v[g[0] + 2][g[1] + 1] == 0
-        if not l4_condition:
-            return False
+    l4_condition = v[g[0] + 2][g[1] + 1] == 0
+    if not l4_condition:
+        return False
 
-        l5_condition = v[g[0] + 1][g[1] + 2] == 0
-        if not l5_condition:
-            return False
+    l5_condition = v[g[0] + 1][g[1] + 2] == 0
+    if not l5_condition:
+        return False
 
-        l6_condition = v[g[0]][g[1] + 2] == 0
-        if not l6_condition:
-            return False
+    l6_condition = v[g[0]][g[1] + 2] == 0
+    if not l6_condition:
+        return False
 
-        l7_condition = v[g[0] - 1][g[1] + 1] == 0
-        if not l7_condition:
-            return False
+    l7_condition = v[g[0] - 1][g[1] + 1] == 0
+    if not l7_condition:
+        return False
 
-        g[0] += 1
-        g[1] += 1
+    g[0] += 1
+    g[1] += 1
 
-        if g[2] == 0:
-            g[2] = 1
+    if g[2] == 0:
+        g[2] = 1
 
-        elif g[2] == 1:
-            g[2] = 2
+    elif g[2] == 1:
+        g[2] = 2
 
-        elif g[2] == 2:
-            g[2] = 3
+    elif g[2] == 2:
+        g[2] = 3
 
-        elif g[2] == 3:
-            g[2] = 0
+    elif g[2] == 3:
+        g[2] = 0
+
+    return True
 
 #평범한 길은 1, 출구는 2, 중앙 지점은 3
 # 3 -> 2 -> 1 -> 3 -> 2 -> 1 순으로 나아가야 함 !!
@@ -220,9 +237,7 @@ for _ in range(K):
 v = [[0 for _ in range(C)] for _ in range(R+3)]
 ans = 0
 for k in range(K):
-    down(gollem[k])
-    turn_left(gollem[k])
-    turn_right(gollem[k])
+    move(gollem[k])
     locate(gollem[k], v)
 
     #refresh가 잘 안돼고 있음
