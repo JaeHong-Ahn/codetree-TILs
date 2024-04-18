@@ -1,18 +1,8 @@
 from collections import deque
 
-#1. refresh 고려해서 격자판 구현
-#2. 골렘을 떨어뜨리면서 이동시킴 -> map을 완성
-#3. 이동 회전 구현
-#4. map을 완성
-#5. 출구 위치 구현
-#6. 정령 이동
-#7. 답을 구한다
-
-#디버깅 에러
 def down(g):
     while True:
-        #d0, d1 ..에서 True, False를 구하는 과정에서 에러가 남
-        #순서대로 하는게 맞는듯
+        
         d0_condition = g[0] <= R
 
         if not d0_condition:
@@ -40,7 +30,7 @@ def turn_left(g):
         if not l1_condition:
             return False
 
-        l2_condition = g[1] > 2
+        l2_condition = g[1] >= 2
         if not l2_condition:
             return False
 
@@ -157,7 +147,7 @@ def locate(g, v):
 
 #v[:3] -> 이중 1인 값이 하나라도 있으면 refresh()
 def refresh(v):
-    for visited in v[:2]:
+    for visited in v[:3]:
         if 1 in visited or 2 in visited:
             return True
 
@@ -175,6 +165,7 @@ def total_score(g, v):
 
     while q:
         r, c = q.popleft()
+        new_max = -1e9
 
         for j in range(4):
             nr = r + dr[j]
@@ -185,23 +176,25 @@ def total_score(g, v):
             # 평범한 길은 1, 출구는 2, 중앙 지점은 3
             # 3 -> 2 -> 1 -> 3 -> 2 -> 1 순으로 나아가야 함 !!
             if move_condition1:
-                # 현재 위치가 평범한 길 1 -> 다음 길은 중앙 3
                 move_condition2 = new_map[nr][nc] == 0 and v[nr][nc] != 0
                 if move_condition2:
-                    if v[r][c] == 1 and v[nr][nc] == 3:
+                    # 현재 위치가 평범한 길 1, 2 -> 다음 길은 중앙 3
+                    if (v[r][c] == 1 or v[r][c] == 2) == 1 and v[nr][nc] == 3:
                         new_map[nr][nc] = 1
                         q.append((nr, nc))
 
                     # 현재 위치가 출구 2 -> 다음 길은 출구가 될 수도 있고 평범한 길이 될 수도 있음 3, 1
-                    if v[r][c] == 2 and (v[nr][nc] == 3 or v[nr][nc] == 1):
+                    elif v[r][c] == 2 and (v[nr][nc] == 3 or v[nr][nc] == 1):
                         new_map[nr][nc] = 1
                         q.append((nr, nc))
+
                     # 현재 위치가 중앙 3 -> 다음 길은 출구 2
-                    if v[r][c] == 3 and v[nr][nc] == 2:
+                    elif v[r][c] == 3 and v[nr][nc] == 2:
                         new_map[nr][nc] = 1
                         q.append((nr, nc))
 
                     max_row = nr if max_row < nr else max_row
+
 
     return max_row - 2
 
@@ -227,7 +220,6 @@ for k in range(K):
     if refresh(v):
         v = [[0 for _ in range(C)] for _ in range(R + 3)]
         continue
-
     ans += total_score(gollem[k], v)
 
 print(ans)
